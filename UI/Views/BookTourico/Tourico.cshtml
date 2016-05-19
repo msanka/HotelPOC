@@ -1,0 +1,36 @@
+﻿@model List<Common.hotelflowSvc.Hotel>
+@{
+    ViewBag.Title = "Tourico Hotel Search Result";
+}
+<h1>Tourico Hotel Search Result</h1>
+
+<table>
+    <thead>
+        <tr>
+            1
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var t in Model)
+            {
+            <tr>
+                <td>@Html.ActionLink(@t.hotelId.ToString(), "BookHotel", "BookTourico", new { hotelId = @t.hotelId }, null)</td>
+                <td>@t.name</td>
+                <td>@t.NumOfRoom </td>
+                <td>@t.minAverPrice </td>
+                <td>@t.category </td>
+            </tr>
+        }
+
+        <tr>
+            <td>
+                <input type="hidden" name="startDate" value="@ViewBag.StartDate" />
+                <input type="hidden" name="endDate" value="@ViewBag.EndDate" />
+                <input type="hidden" name="adults" value="@ViewBag.Adults" />
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+

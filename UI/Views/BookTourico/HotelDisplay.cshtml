@@ -1,0 +1,208 @@
+﻿@model Common.hotelflowSvc.TWS_HotelDetailsV3
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Hotel Property Details - Tourico</h2>
+<div style="background-color:white; padding:10px; margin:10px; font-size:12px;">
+    @if (true)
+    {
+        <table>
+            <tr>
+                <td>
+                    <h1>@Model.Hotel[0].name</h1>
+                </td>
+                <td>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" style="color:orange; font-size:20px;"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" style="color:orange; font-size:20px;"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" style="color:orange; font-size:20px;"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" style="color:orange; font-size:20px;"></span>
+                </td>
+                <td align="right"><b>Check-In Time: </b>@ViewBag.StartDate</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+
+                    @{
+
+                        if (Model.Location.Rows.Count > 0)
+                        {                            
+                            var hotelAddress = string.Empty;
+                            try
+                            {
+                                if (Model.Location[0].location != null)
+                                {
+                                    hotelAddress += Model.Location[0].location + ", ";
+                                }
+                                hotelAddress += Model.Location[0].destinationCode;
+                            }
+                            catch { };
+                            @hotelAddress
+
+                        }
+                    }
+                   
+                </td>
+                <td align="right"><b>Check-Out Time: </b>@ViewBag.EndDate</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>
+                        <span class="glyphicon glyphicon-phone-alt" aria-hidden="true" style="font-size:20px;"></span>
+                        @Model.Hotel[0].hotelPhone  , @Model.Hotel[0].hotelFax
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">      
+
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td></td>
+                <td><b><u>Options Info:</u></b></td>
+                <td><b><u>Property Type:</u></b></td>
+            </tr>
+            <tr>
+                <td>
+                    <img src=@Model.Hotel[0].thumb />
+                </td>
+                <td>
+                    <div style="overflow:auto; max-height:250px; max-width:300px;">
+                        @{
+                            @*foreach (var t in Model.RoomStay.BasicPropertyInfo.PropertyOptionInfo.GetType().GetProperties())
+                            {
+                                var value = t.GetValue(Model.RoomStay.BasicPropertyInfo.PropertyOptionInfo, null);
+                                <b>@t.Name: </b><span>True/False</span><br />
+                            }*@
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div style="overflow:auto; max-height:250px; max-width:300px;">
+                        @{
+                            @*foreach (var t in Model.RoomStay.BasicPropertyInfo.PropertyTypeInfo.GetType().GetProperties())
+                            {
+                                var value = t.GetValue(Model.RoomStay.BasicPropertyInfo.PropertyTypeInfo, null);
+                                <b>@t.Name: </b><span>True/False</span><br />
+                            }*@
+                        }
+                    </div>
+                </td>
+            </tr> 
+           
+            <tr>
+               
+            </tr>  
+           <tr>
+                <td colspan="3">
+                    <b><u>Available Rooms</u></b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @if (true)
+                    {
+                        <table width="100%">
+                       <tr>
+                           <th width="40%">Room Types</th>
+                           <th>Room Code</th>
+                           <th></th>
+                           <th>Type</th>
+                       </tr>
+                       <tr>
+                           <td colspan="4"><hr /></td>
+                       </tr>
+                       @{
+                           foreach (var roomtype in @Model.RoomType)
+                           {
+                               if(true)
+                               {
+                               <tr>                                   
+                                   <td>   
+                                       @*@{ var name = string.Empty; int counter = 0; }                                 
+                                        @foreach(var desc in rate.AdditionalInfo.Text){
+                                            if (counter == 0)
+                                            {*@ 
+                                                <p><b>@roomtype.name</b></p>
+                                                @*counter += 1;*@
+                                            @*}  
+                                            else
+                                            {
+                                                <span style="font-size:10px;">@desc</span>
+                                            }        
+                                        }
+                                       @name*@                                               
+                                   </td>
+                                   <td>
+                                       @roomtype.roomId
+                                   </td>
+                                   <td>
+                                       
+                                       @*@{ 
+                                           var totalAmount = string.Empty;
+                                           foreach(var rte in rate.Rates)
+                                           {
+                                               totalAmount = rte.CurrencyCode + " " + rte.Amount;
+                                           }
+                                        }
+                                       @using (Html.BeginForm("Index", ""))
+                                       {
+                                        @Html.ActionLink(totalAmount, "Index", "PriceBreakup", new { @startDate = @Model.RoomStay.TimeSpan.Start,
+                                                                                                     @endDate = @Model.RoomStay.TimeSpan.End,
+                                                                                                     @totalTravellers = @ViewBag.TotalTravellers,
+                                                                                                     @hotelCode = @Model.RoomStay.BasicPropertyInfo.HotelCode,
+                                                                                                     @propertyRphNumber = @rate.RPH}, null) 
+                                       }*@
+                                       
+                                   </td>
+                                   <td>
+                                       @roomtype.roomTypeCategory
+                                   </td>
+                                   <td>
+                                       @using (Html.BeginForm("CheckAvailability", "BookTourico"))
+                                       {
+                                        <input type="hidden" name="startDate" value="@ViewBag.StartDate" />
+                                        <input type="hidden" name="endDate" value="@ViewBag.EndDate" />
+                                        <input type="hidden" name="totalTravellers" value="@ViewBag.TotalTravellers" />
+                                        <input type="hidden" name="hotelCode" value="@Model.Hotel[0].hotelID"/>
+                                        <input type="hidden" name="hotelRoomId" value="@roomtype.GetHotelRoomTypeIdsRows()[0].HotelRoomTypeIds_Id" />
+                                        <input type="hidden" name="propertyRphNumber" value="" />
+                                           <button type="submit" class="btn btn-success">Check Availability</button>
+                                       }
+                                   </td>
+                               </tr>
+                                <tr><td>&nbsp;</td></tr>
+                                <tr>
+                                    <td colspan="4" valign="baseline">
+                                     @*   <b>CancelPolicy:</b> Cancellation should be made  @rate.AdditionalInfo.CancelPolicy.Numeric @rate.AdditionalInfo.CancelPolicy.Option before check-In date.*@
+                                    </td>
+                                </tr>
+                               <tr>
+                                 <td colspan="4"><hr /></td>
+                               </tr>
+                               }
+                           }                           
+                       }
+                    
+                   </table>
+                    }
+                    else
+                    {
+                        <p style="color:red; font-size:15px;">No room available</p>
+                    }
+                </td>
+            </tr>  
+
+        </table>
+    }
+    else
+    {
+        <h1><p style="color:red;">No record found.</p></h1>
+    }
+
+
+
+</div>
